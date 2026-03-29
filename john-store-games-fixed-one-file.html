@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>John Store Games</title>
+<meta name="theme-color" content="#0b0017">
+<style>
+:root{
+  --bg1:#070012; --bg2:#120022; --bg3:#08111d;
+  --cyan:#00f5ff; --pink:#ff2bd6; --yellow:#ffd84d; --white:#f7f8ff; --muted:#d5ceff;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; font-family:Arial,Helvetica,sans-serif; color:var(--white); text-align:center;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(0,245,255,.14), transparent 18%),
+    radial-gradient(circle at 80% 18%, rgba(255,43,214,.14), transparent 18%),
+    linear-gradient(180deg,var(--bg1),var(--bg2) 55%,var(--bg3));
+}
+.wrap{max-width:1180px; margin:0 auto; padding:24px}
+h1{
+  font-size:clamp(38px,7vw,74px); margin:24px 0 10px;
+  color:var(--cyan); text-shadow:0 0 12px rgba(0,245,255,.45),0 0 28px rgba(255,43,214,.22);
+}
+p.lead{color:var(--muted); font-size:18px; line-height:1.7; max-width:760px; margin:0 auto 24px}
+.grid{display:grid; grid-template-columns:repeat(2,1fr); gap:18px; margin-top:22px}
+.card{
+  background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.10);
+  border-radius:24px; padding:22px; box-shadow:0 16px 32px rgba(0,0,0,.24); text-align:left;
+}
+.badge{
+  display:inline-block; padding:6px 10px; border-radius:999px;
+  background:rgba(255,255,255,.08); color:var(--yellow); font-size:12px; font-weight:800;
+}
+.card h2{margin:14px 0 10px; font-size:30px; text-align:left}
+.card p{margin:0 0 16px; color:var(--muted); line-height:1.7}
+.art{width:100%; border-radius:18px; display:block; background:#11192d}
+a.btn{
+  display:inline-block; padding:12px 18px; border-radius:14px; color:#fff; text-decoration:none; font-weight:800;
+  background:linear-gradient(90deg,var(--pink),#8f59ff); box-shadow:0 0 18px rgba(255,43,214,.20);
+}
+.about{
+  margin-top:28px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.10);
+  border-radius:24px; padding:22px; text-align:left;
+}
+.about h3{color:var(--yellow); font-size:26px; margin:0 0 12px}
+.about p{color:var(--muted); line-height:1.8; margin:0}
+footer{padding:26px; color:var(--muted)}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>John Store Games</h1>
+  <p class="lead">A neon arcade collection bringing together the current games in one simple place. This version has the card images built inside the file itself.</p>
+
+  <div class="grid">
+    <div class="card">
+      <img class="art" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNDUwIiB2aWV3Qm94PSIwIDAgODAwIDQ1MCI+CjxkZWZzPgogIDxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzAwZjVmZiIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmYyYmQ2Ii8+CiAgPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjQ1MCIgcng9IjMyIiBmaWxsPSIjMGIwMDE3Ii8+CjxyZWN0IHg9IjIwIiB5PSIyMCIgd2lkdGg9Ijc2MCIgaGVpZ2h0PSI0MTAiIHJ4PSIyNCIgZmlsbD0idXJsKCNnKSIgb3BhY2l0eT0iMC4xOCIvPgo8Y2lyY2xlIGN4PSIxMzAiIGN5PSIxMDAiIHI9IjkwIiBmaWxsPSIjMDBmNWZmIiBvcGFjaXR5PSIwLjE2Ii8+CjxjaXJjbGUgY3g9IjY1MCIgY3k9IjM0MCIgcj0iMTEwIiBmaWxsPSIjZmYyYmQ2IiBvcGFjaXR5PSIwLjE2Ii8+CjxyZWN0IHg9IjQwIiB5PSIxNTAiIHdpZHRoPSI3MjAiIGhlaWdodD0iMjEwIiByeD0iMjQiIGZpbGw9IiMxMTE5MmQiIHN0cm9rZT0iI2ZmZDg0ZCIgc3Ryb2tlLXdpZHRoPSI0Ii8+Cjx0ZXh0IHg9IjUwIiB5PSI5MiIgZm9udC1zaXplPSI0NiIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI5MDAiIGZpbGw9IiNmZmZmZmYiPkdsb3cgRmFzaGlvbiBCYXR0bGU8L3RleHQ+Cjx0ZXh0IHg9IjUyIiB5PSIxMjYiIGZvbnQtc2l6ZT0iMjIiIGZvbnQtZmFtaWx5PSJBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIiBmaWxsPSIjZDVjZWZmIj5GYXNoaW9uIOKAoiBOZW9uIOKAoiBTdG9yZTwvdGV4dD4KPHRleHQgeD0iNDAwIiB5PSIyODUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTEwIiBmb250LWZhbWlseT0iQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiI+8J+RlzwvdGV4dD4KPHJlY3QgeD0iNTAiIHk9IjM4NCIgd2lkdGg9IjE5MCIgaGVpZ2h0PSIyNCIgcng9IjEyIiBmaWxsPSIjZmZkODRkIi8+CjxyZWN0IHg9IjI1MiIgeT0iMzg0IiB3aWR0aD0iMTEwIiBoZWlnaHQ9IjI0IiByeD0iMTIiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMjQiLz4KPHJlY3QgeD0iMzc0IiB5PSIzODQiIHdpZHRoPSIxNTAiIGhlaWdodD0iMjQiIHJ4PSIxMiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xOCIvPgo8L3N2Zz4=" alt="Glow Fashion Battle card">
+      <span class="badge">Fashion • Neon • Store</span>
+      <h2>Glow Fashion Battle</h2>
+      <p>A stylish neon fashion game with coins, gems, power-ups, and a shop system.</p>
+      <a class="btn" href="https://glow-fashion-battle.netlify.app" target="_blank" rel="noopener noreferrer">Play Now</a>
+    </div>
+
+    <div class="card">
+      <img class="art" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNDUwIiB2aWV3Qm94PSIwIDAgODAwIDQ1MCI+CjxkZWZzPgogIDxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmMmJkNiIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjN2I2MWZmIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjQ1MCIgcng9IjMyIiBmaWxsPSIjMGIwMDE3Ii8+CjxyZWN0IHg9IjIwIiB5PSIyMCIgd2lkdGg9Ijc2MCIgaGVpZ2h0PSI0MTAiIHJ4PSIyNCIgZmlsbD0idXJsKCNnKSIgb3BhY2l0eT0iMC4xOCIvPgo8Y2lyY2xlIGN4PSIxMzAiIGN5PSIxMDAiIHI9IjkwIiBmaWxsPSIjZmYyYmQ2IiBvcGFjaXR5PSIwLjE2Ii8+CjxjaXJjbGUgY3g9IjY1MCIgY3k9IjM0MCIgcj0iMTEwIiBmaWxsPSIjN2I2MWZmIiBvcGFjaXR5PSIwLjE2Ii8+CjxyZWN0IHg9IjQwIiB5PSIxNTAiIHdpZHRoPSI3MjAiIGhlaWdodD0iMjEwIiByeD0iMjQiIGZpbGw9IiMxMTE5MmQiIHN0cm9rZT0iIzAwZjVmZiIgc3Ryb2tlLXdpZHRoPSI0Ii8+Cjx0ZXh0IHg9IjUwIiB5PSI5MiIgZm9udC1zaXplPSI0NiIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI5MDAiIGZpbGw9IiNmZmZmZmYiPlRhcCBSdXNoIFJlZmxleDwvdGV4dD4KPHRleHQgeD0iNTIiIHk9IjEyNiIgZm9udC1zaXplPSIyMiIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZpbGw9IiNkNWNlZmYiPkFyY2FkZSDigKIgUmVmbGV4IOKAoiBGYXN0PC90ZXh0Pgo8dGV4dCB4PSI0MDAiIHk9IjI4NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMTAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIj7imqE8L3RleHQ+CjxyZWN0IHg9IjUwIiB5PSIzODQiIHdpZHRoPSIxOTAiIGhlaWdodD0iMjQiIHJ4PSIxMiIgZmlsbD0iIzAwZjVmZiIvPgo8cmVjdCB4PSIyNTIiIHk9IjM4NCIgd2lkdGg9IjExMCIgaGVpZ2h0PSIyNCIgcng9IjEyIiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjI0Ii8+CjxyZWN0IHg9IjM3NCIgeT0iMzg0IiB3aWR0aD0iMTUwIiBoZWlnaHQ9IjI0IiByeD0iMTIiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMTgiLz4KPC9zdmc+" alt="Tap Rush Reflex card">
+      <span class="badge">Arcade • Reflex • Fast</span>
+      <h2>Tap Rush Reflex</h2>
+      <p>A quick reaction game built for pressure, speed, and replay value.</p>
+      <a class="btn" href="https://jc4768766-sudo.github.io/tap-rush-reflex/?v=3" target="_blank" rel="noopener noreferrer">Play Now</a>
+    </div>
+
+    <div class="card">
+      <img class="art" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNDUwIiB2aWV3Qm94PSIwIDAgODAwIDQ1MCI+CjxkZWZzPgogIDxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzAwZjVmZiIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMDBjODUzIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjQ1MCIgcng9IjMyIiBmaWxsPSIjMGIwMDE3Ii8+CjxyZWN0IHg9IjIwIiB5PSIyMCIgd2lkdGg9Ijc2MCIgaGVpZ2h0PSI0MTAiIHJ4PSIyNCIgZmlsbD0idXJsKCNnKSIgb3BhY2l0eT0iMC4xOCIvPgo8Y2lyY2xlIGN4PSIxMzAiIGN5PSIxMDAiIHI9IjkwIiBmaWxsPSIjMDBmNWZmIiBvcGFjaXR5PSIwLjE2Ii8+CjxjaXJjbGUgY3g9IjY1MCIgY3k9IjM0MCIgcj0iMTEwIiBmaWxsPSIjMDBjODUzIiBvcGFjaXR5PSIwLjE2Ii8+CjxyZWN0IHg9IjQwIiB5PSIxNTAiIHdpZHRoPSI3MjAiIGhlaWdodD0iMjEwIiByeD0iMjQiIGZpbGw9IiMxMTE5MmQiIHN0cm9rZT0iI2ZmMmJkNiIgc3Ryb2tlLXdpZHRoPSI0Ii8+Cjx0ZXh0IHg9IjUwIiB5PSI5MiIgZm9udC1zaXplPSI0NiIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI5MDAiIGZpbGw9IiNmZmZmZmYiPkhhY2sgRGVmZW5kZXIgTmVvbjwvdGV4dD4KPHRleHQgeD0iNTIiIHk9IjEyNiIgZm9udC1zaXplPSIyMiIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZpbGw9IiNkNWNlZmYiPkN5YmVyIOKAoiBDb21ibyDigKIgQWN0aW9uPC90ZXh0Pgo8dGV4dCB4PSI0MDAiIHk9IjI4NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMTAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIj7wn5uh77iPPC90ZXh0Pgo8cmVjdCB4PSI1MCIgeT0iMzg0IiB3aWR0aD0iMTkwIiBoZWlnaHQ9IjI0IiByeD0iMTIiIGZpbGw9IiNmZjJiZDYiLz4KPHJlY3QgeD0iMjUyIiB5PSIzODQiIHdpZHRoPSIxMTAiIGhlaWdodD0iMjQiIHJ4PSIxMiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4yNCIvPgo8cmVjdCB4PSIzNzQiIHk9IjM4NCIgd2lkdGg9IjE1MCIgaGVpZ2h0PSIyNCIgcng9IjEyIiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjE4Ii8+Cjwvc3ZnPg==" alt="Hack Defender Neon card">
+      <span class="badge">Cyber • Combo • Action</span>
+      <h2>Hack Defender Neon</h2>
+      <p>A cyber-themed reflex challenge with neon style and intense score pressure.</p>
+      <a class="btn" href="https://jc4768766-sudo.github.io/hack-defender-neon/" target="_blank" rel="noopener noreferrer">Play Now</a>
+    </div>
+
+    <div class="card">
+      <img class="art" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNDUwIiB2aWV3Qm94PSIwIDAgODAwIDQ1MCI+CjxkZWZzPgogIDxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZDg0ZCIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmY4YTAwIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjQ1MCIgcng9IjMyIiBmaWxsPSIjMGIwMDE3Ii8+CjxyZWN0IHg9IjIwIiB5PSIyMCIgd2lkdGg9Ijc2MCIgaGVpZ2h0PSI0MTAiIHJ4PSIyNCIgZmlsbD0idXJsKCNnKSIgb3BhY2l0eT0iMC4xOCIvPgo8Y2lyY2xlIGN4PSIxMzAiIGN5PSIxMDAiIHI9IjkwIiBmaWxsPSIjZmZkODRkIiBvcGFjaXR5PSIwLjE2Ii8+CjxjaXJjbGUgY3g9IjY1MCIgY3k9IjM0MCIgcj0iMTEwIiBmaWxsPSIjZmY4YTAwIiBvcGFjaXR5PSIwLjE2Ii8+CjxyZWN0IHg9IjQwIiB5PSIxNTAiIHdpZHRoPSI3MjAiIGhlaWdodD0iMjEwIiByeD0iMjQiIGZpbGw9IiMxMTE5MmQiIHN0cm9rZT0iIzAwZjVmZiIgc3Ryb2tlLXdpZHRoPSI0Ii8+Cjx0ZXh0IHg9IjUwIiB5PSI5MiIgZm9udC1zaXplPSI0NiIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI5MDAiIGZpbGw9IiNmZmZmZmYiPlNtYXJ0IE1pbmQgQ2hhbGxlbmdlPC90ZXh0Pgo8dGV4dCB4PSI1MiIgeT0iMTI2IiBmb250LXNpemU9IjIyIiBmb250LWZhbWlseT0iQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiIgZmlsbD0iI2Q1Y2VmZiI+UHV6emxlIOKAoiBCcmFpbiDigKIgQ2hhbGxlbmdlPC90ZXh0Pgo8dGV4dCB4PSI0MDAiIHk9IjI4NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMTAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIj7wn6epPC90ZXh0Pgo8cmVjdCB4PSI1MCIgeT0iMzg0IiB3aWR0aD0iMTkwIiBoZWlnaHQ9IjI0IiByeD0iMTIiIGZpbGw9IiMwMGY1ZmYiLz4KPHJlY3QgeD0iMjUyIiB5PSIzODQiIHdpZHRoPSIxMTAiIGhlaWdodD0iMjQiIHJ4PSIxMiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4yNCIvPgo8cmVjdCB4PSIzNzQiIHk9IjM4NCIgd2lkdGg9IjE1MCIgaGVpZ2h0PSIyNCIgcng9IjEyIiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjE4Ii8+Cjwvc3ZnPg==" alt="Smart Mind Challenge card">
+      <span class="badge">Puzzle • Brain • Challenge</span>
+      <h2>Smart Mind Challenge</h2>
+      <p>A lightweight puzzle experience made for quick thinking and casual challenge.</p>
+      <a class="btn" href="https://lm4317275-pixel.github.io/smart-mind-challenge/" target="_blank" rel="noopener noreferrer">Play Now</a>
+    </div>
+  </div>
+
+  <div class="about">
+    <h3>About John Store Games</h3>
+    <p>John Store Games is a growing indie brand focused on neon-styled browser games, quick play sessions, and projects that can grow into a stronger portfolio.</p>
+  </div>
+</div>
+
+<footer>© 2026 John Store Games</footer>
+</body>
+</html>
