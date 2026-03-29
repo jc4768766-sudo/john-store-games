@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>John Store Games — Cyber Pro</title>
+<meta name="theme-color" content="#08111d">
+<style>
+:root {
+  --bg:#060b14;
+  --bg2:#0a1220;
+  --panel:#0d1728cc;
+  --line:#1e3555;
+  --cyan:#00f5ff;
+  --blue:#5c8cff;
+  --violet:#7a5cff;
+  --text:#f4f7ff;
+  --muted:#9eb7d9;
+  --soft:#c9d8f0;
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 18% 10%, rgba(0,245,255,.10), transparent 20%),
+    radial-gradient(circle at 82% 18%, rgba(92,140,255,.11), transparent 18%),
+    linear-gradient(180deg, #060b14, #0b1322 52%, #09111d);
+  overflow-x:hidden;
+}
+body::before {
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px);
+  background-size:32px 32px;
+  opacity:.24;
+}
+a { text-decoration:none; color:inherit; }
+
+.loading {
+  position:fixed; inset:0; z-index:9999;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:14px; background:#050913;
+  transition:opacity .45s ease, visibility .45s ease;
+}
+.loading.hide { opacity:0; visibility:hidden; }
+.loading img { width:min(430px,86vw); filter:drop-shadow(0 0 18px rgba(0,245,255,.18)); }
+.loading p { margin:0; color:var(--muted); letter-spacing:.4px; }
+.loader {
+  width:min(360px,82vw); height:10px; border-radius:999px; overflow:hidden;
+  border:1px solid #224264; background:#0c1a2c;
+}
+.loader span {
+  display:block; height:100%; width:0;
+  background:linear-gradient(90deg, var(--cyan), var(--blue), var(--violet));
+  box-shadow:0 0 18px rgba(92,140,255,.35);
+  animation:load 2.2s ease forwards;
+}
+@keyframes load { from { width:0; } to { width:100%; } }
+
+header {
+  position:sticky; top:0; z-index:99;
+  backdrop-filter:blur(16px);
+  background:rgba(7,12,20,.72);
+  border-bottom:1px solid rgba(92,140,255,.16);
+}
+.header-inner {
+  max-width:1280px; margin:0 auto; padding:14px 20px;
+  display:flex; justify-content:space-between; align-items:center; gap:16px;
+}
+.brand {
+  display:flex; align-items:center; gap:12px;
+}
+.brand-mark {
+  width:50px; height:50px; border-radius:16px;
+  display:grid; place-items:center; font-size:24px;
+  background:linear-gradient(135deg, rgba(0,245,255,.14), rgba(122,92,255,.20));
+  border:1px solid rgba(92,140,255,.22);
+  box-shadow:0 0 18px rgba(0,245,255,.08);
+}
+.brand-text {
+  font-size:22px; font-weight:900; letter-spacing:.8px;
+  color:#dff3ff;
+  text-shadow:0 0 12px rgba(92,140,255,.16);
+}
+nav {
+  display:flex; gap:10px; flex-wrap:wrap;
+}
+nav a, .btn {
+  border:1px solid rgba(92,140,255,.18);
+  border-radius:14px;
+  padding:12px 16px;
+  color:#eaf5ff;
+  font-weight:800;
+  cursor:pointer;
+  transition:.18s ease;
+  background:linear-gradient(180deg, rgba(26,46,74,.94), rgba(14,24,40,.94));
+  box-shadow:0 8px 18px rgba(0,0,0,.18);
+}
+nav a:hover, .btn:hover {
+  transform:translateY(-2px);
+  border-color:rgba(0,245,255,.24);
+  box-shadow:0 0 18px rgba(92,140,255,.12);
+}
+.btn.primary {
+  background:linear-gradient(90deg, rgba(0,245,255,.20), rgba(92,140,255,.24));
+}
+.btn.secondary {
+  background:rgba(255,255,255,.04);
+}
+
+.hero {
+  max-width:1280px; margin:0 auto; padding:44px 20px 28px;
+  display:grid; grid-template-columns:1.06fr .94fr; gap:22px; align-items:center;
+}
+.hero h1 {
+  margin:0 0 14px; font-size:clamp(42px,7vw,84px); line-height:1.02;
+}
+.hero .accent {
+  color:var(--cyan);
+  text-shadow:0 0 14px rgba(0,245,255,.22), 0 0 26px rgba(92,140,255,.10);
+}
+.hero p {
+  margin:0 0 22px; color:var(--muted); max-width:760px;
+  font-size:18px; line-height:1.88;
+}
+.hero-actions { display:flex; gap:10px; flex-wrap:wrap; }
+.panel, .game-card, .cta {
+  background:var(--panel);
+  border:1px solid rgba(92,140,255,.16);
+  border-radius:28px;
+  box-shadow:0 24px 52px rgba(0,0,0,.28);
+  backdrop-filter:blur(12px);
+}
+.hero-panel {
+  padding:18px;
+}
+.hero-visual {
+  min-height:360px;
+  border-radius:24px;
+  overflow:hidden;
+  position:relative;
+  padding:22px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(0,245,255,.12), transparent 24%),
+    radial-gradient(circle at 82% 24%, rgba(122,92,255,.14), transparent 24%),
+    linear-gradient(145deg, rgba(14,30,52,.96), rgba(10,18,32,.98));
+  border:1px solid rgba(92,140,255,.20);
+}
+.hero-visual::after {
+  content:"";
+  position:absolute;
+  inset:-35% -12%;
+  background:linear-gradient(120deg, transparent 35%, rgba(255,255,255,.06) 50%, transparent 65%);
+  transform:rotate(8deg);
+  animation:shine 9s linear infinite;
+}
+@keyframes shine {
+  from { transform:translateX(-60%) rotate(8deg); }
+  to { transform:translateX(60%) rotate(8deg); }
+}
+.chip {
+  width:max-content;
+  padding:8px 12px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:900;
+  color:#dff3ff;
+  border:1px solid rgba(92,140,255,.22);
+  background:rgba(255,255,255,.03);
+  position:relative;
+  z-index:1;
+}
+.visual-title {
+  font-size:54px; font-weight:900; line-height:1.02; position:relative; z-index:1;
+}
+.visual-text {
+  max-width:430px; color:var(--muted); line-height:1.8; position:relative; z-index:1;
+}
+.stats {
+  display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:14px;
+}
+.stat {
+  padding:14px; border-radius:18px; text-align:center;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(92,140,255,.14);
+}
+.stat .num { font-size:28px; font-weight:900; color:#dff3ff; }
+.stat .label {
+  margin-top:4px; font-size:12px; color:var(--muted);
+  text-transform:uppercase; letter-spacing:.8px;
+}
+
+section {
+  max-width:1280px; margin:0 auto; padding:30px 20px;
+}
+.section-head {
+  display:flex; justify-content:space-between; align-items:end; gap:14px; margin-bottom:18px;
+}
+.section-head h2 {
+  margin:0; font-size:38px; color:#e9f6ff;
+}
+.section-head p {
+  margin:0; max-width:760px; color:var(--muted); line-height:1.84;
+}
+
+.games {
+  display:grid; grid-template-columns:repeat(2,1fr); gap:18px;
+}
+.game-card {
+  overflow:hidden;
+  transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.game-card:hover {
+  transform:translateY(-6px);
+  border-color:rgba(0,245,255,.20);
+  box-shadow:0 28px 54px rgba(0,0,0,.32), 0 0 20px rgba(92,140,255,.08);
+}
+.card-cover {
+  width:100%; display:block; aspect-ratio:16/9; object-fit:cover;
+  background:#0f1a2d; border-bottom:1px solid rgba(92,140,255,.14);
+}
+.card-body {
+  padding:18px; display:flex; flex-direction:column; gap:12px;
+}
+.tag {
+  display:inline-block; width:max-content;
+  padding:6px 10px; border-radius:999px;
+  color:#dff3ff; font-size:12px; font-weight:800;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(92,140,255,.16);
+}
+.game-card h3 { margin:0; font-size:30px; }
+.game-card p { margin:0; color:var(--muted); line-height:1.86; flex:1; }
+.actions { display:flex; gap:10px; flex-wrap:wrap; }
+
+.grid2 {
+  display:grid; grid-template-columns:1fr 1fr; gap:18px;
+}
+.panel {
+  padding:22px;
+}
+.panel h3 { margin:0 0 12px; font-size:26px; color:#eaf6ff; }
+.panel p, .panel li { margin:0; color:var(--muted); line-height:1.92; }
+.panel ul { margin:0; padding-left:20px; }
+
+.cta {
+  padding:28px; text-align:center;
+}
+.cta h3 { margin:0 0 10px; font-size:36px; }
+.cta p { margin:0 0 16px; color:var(--muted); line-height:1.88; }
+
+footer {
+  max-width:1280px; margin:0 auto; padding:26px 20px 52px;
+  color:var(--muted); text-align:center; line-height:1.8;
+}
+
+.reveal {
+  opacity:0; transform:translateY(28px); transition:opacity .8s ease, transform .8s ease;
+}
+.reveal.show { opacity:1; transform:translateY(0); }
+
+@media (max-width:1050px) {
+  .hero, .games, .grid2 { grid-template-columns:1fr; }
+}
+@media (max-width:760px) {
+  .header-inner { flex-direction:column; align-items:flex-start; }
+  .stats { grid-template-columns:repeat(2,1fr); }
+}
+</style>
+</head>
+<body>
+<div class="loading" id="loading">
+  <img src="data:image/svg+xml;base64,CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTIwMCIgaGVpZ2h0PSIzMjAiIHZpZXdCb3g9IjAgMCAxMjAwIDMyMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImcxIiB4MT0iMCIgeDI9IjEiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMDBmNWZmIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iNTUlIiBzdG9wLWNvbG9yPSIjNGRiOGZmIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzdhNWNmZiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxmaWx0ZXIgaWQ9Imdsb3ciPgogICAgICA8ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSI4IiByZXN1bHQ9ImIiLz4KICAgICAgPGZlTWVyZ2U+PGZlTWVyZ2VOb2RlIGluPSJiIi8+PGZlTWVyZ2VOb2RlIGluPSJTb3VyY2VHcmFwaGljIi8+PC9mZU1lcmdlPgogICAgPC9maWx0ZXI+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjMyMCIgcng9IjI4IiBmaWxsPSIjMDgxMTFkIi8+CiAgPHJlY3QgeD0iMTgiIHk9IjE4IiB3aWR0aD0iMTE2NCIgaGVpZ2h0PSIyODQiIHJ4PSIyMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2cxKSIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIwLjU1Ii8+CiAgPGNpcmNsZSBjeD0iMTQwIiBjeT0iOTIiIHI9IjkwIiBmaWxsPSIjMDBmNWZmIiBvcGFjaXR5PSIwLjA4Ii8+CiAgPGNpcmNsZSBjeD0iMTA1MCIgY3k9IjIyMCIgcj0iMTAwIiBmaWxsPSIjN2E1Y2ZmIiBvcGFjaXR5PSIwLjEwIi8+CiAgPGcgZmlsdGVyPSJ1cmwoI2dsb3cpIj4KICAgIDx0ZXh0IHg9IjU2IiB5PSIxMjIiIGZvbnQtc2l6ZT0iNjQiIGZvbnQtZmFtaWx5PSJBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSJ1cmwoI2cxKSI+Sk9ITiBTVE9SRTwvdGV4dD4KICAgIDx0ZXh0IHg9IjU2IiB5PSIyMDAiIGZvbnQtc2l6ZT0iNzIiIGZvbnQtZmFtaWx5PSJBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSIjZjdmOGZmIj5HQU1FUzwvdGV4dD4KICA8L2c+CiAgPHRleHQgeD0iNjAiIHk9IjI0NiIgZm9udC1zaXplPSIyNCIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZpbGw9IiM5ZWI3ZDkiPkN5YmVyIGFyY2FkZSBzdHVkaW8g4oCiIHBvcnRmb2xpbyBodWIg4oCiIHByZW1pdW0gd2ViIGdhbWVzPC90ZXh0PgogIDxyZWN0IHg9Ijg4NCIgeT0iNzIiIHdpZHRoPSIyMjAiIGhlaWdodD0iMTU2IiByeD0iMjIiIGZpbGw9IiMwZDFiMmYiIHN0cm9rZT0iIzAwZjVmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgPHJlY3QgeD0iOTE2IiB5PSIxMDAiIHdpZHRoPSIxNTYiIGhlaWdodD0iMTYiIHJ4PSI4IiBmaWxsPSIjMDBmNWZmIiBvcGFjaXR5PSIwLjg1Ii8+CiAgPHJlY3QgeD0iOTE2IiB5PSIxMjgiIHdpZHRoPSIxMDYiIGhlaWdodD0iMTIiIHJ4PSI2IiBmaWxsPSIjODhkN2ZmIiBvcGFjaXR5PSIwLjg1Ii8+CiAgPHJlY3QgeD0iOTE2IiB5PSIxNTQiIHdpZHRoPSIxMzIiIGhlaWdodD0iMTIiIHJ4PSI2IiBmaWxsPSIjNmI4Y2ZmIiBvcGFjaXR5PSIwLjgiLz4KICA8cmVjdCB4PSI5MTYiIHk9IjE4MiIgd2lkdGg9Ijg4IiBoZWlnaHQ9IjEyIiByeD0iNiIgZmlsbD0iI2I5YzhmZiIgb3BhY2l0eT0iMC43Ii8+Cjwvc3ZnPgo=" alt="John Store Games logo">
+  <p>Loading Cyber Pro experience…</p>
+  <div class="loader"><span></span></div>
+</div>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-mark">▣</div>
+      <div class="brand-text">JOHN STORE GAMES</div>
+    </div>
+    <nav>
+      <a href="#games">Games</a>
+      <a href="#about">About</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="reveal">
+      <h1>Welcome to your <span class="accent">Cyber Pro</span> game studio.</h1>
+      <p>This version changes the whole mood: colder palette, sharper panels, premium covers, studio-style layout, and a cleaner futuristic identity that feels much more like a real indie game company.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#games">Explore Games</a>
+        <a class="btn secondary" href="#contact">Contact Studio</a>
+      </div>
+    </div>
+
+    <div class="panel hero-panel reveal">
+      <div class="hero-visual">
+        <div class="chip">CYBER PRO PORTFOLIO</div>
+        <div class="visual-title">JOHN<br>STORE<br>GAMES</div>
+        <div class="visual-text">One stronger identity, one cleaner homepage, and a more serious foundation for presenting your games professionally.</div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="num">4</div><div class="label">Games</div></div>
+        <div class="stat"><div class="num">Live</div><div class="label">Status</div></div>
+        <div class="stat"><div class="num">Web</div><div class="label">Platform</div></div>
+        <div class="stat"><div class="num">Pro</div><div class="label">Identity</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="games">
+    <div class="section-head reveal">
+      <div>
+        <h2>Featured Games</h2>
+        <p>This is a real visual shift from the earlier versions: bigger covers, cyber styling, cleaner UI, and a stronger sense of studio presentation.</p>
+      </div>
+    </div>
+    <div class="games">
+      
+    <article class="game-card reveal">
+      <img class="card-cover" src="data:image/svg+xml;base64,CiAgICA8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEyMDAiIGhlaWdodD0iNzIwIiB2aWV3Qm94PSIwIDAgMTIwMCA3MjAiPgogICAgICA8ZGVmcz4KICAgICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+CiAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMDBmNWZmIi8+CiAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM3YTVjZmYiLz4KICAgICAgICA8L2xpbmVhckdyYWRpZW50PgogICAgICA8L2RlZnM+CiAgICAgIDxyZWN0IHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjcyMCIgcng9IjM2IiBmaWxsPSIjMDkxMTFkIi8+CiAgICAgIDxyZWN0IHg9IjIyIiB5PSIyMiIgd2lkdGg9IjExNTYiIGhlaWdodD0iNjc2IiByeD0iMjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwZjVmZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIwLjQ1Ii8+CiAgICAgIDxyZWN0IHg9IjQwIiB5PSI0MCIgd2lkdGg9IjExMjAiIGhlaWdodD0iNjQwIiByeD0iMjgiIGZpbGw9InVybCgjYmcpIiBvcGFjaXR5PSIwLjEyIi8+CiAgICAgIDxjaXJjbGUgY3g9IjE2MCIgY3k9IjE0MCIgcj0iMTIwIiBmaWxsPSIjMDBmNWZmIiBvcGFjaXR5PSIwLjEyIi8+CiAgICAgIDxjaXJjbGUgY3g9IjEwMTAiIGN5PSI1NDAiIHI9IjE0MCIgZmlsbD0iIzdhNWNmZiIgb3BhY2l0eT0iMC4xMiIvPgogICAgICA8cmVjdCB4PSI3MCIgeT0iMjIwIiB3aWR0aD0iMTA2MCIgaGVpZ2h0PSIzNDAiIHJ4PSIyOCIgZmlsbD0iIzBkMTcyOCIgc3Ryb2tlPSIjMDBmNWZmIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPHRleHQgeD0iODAiIHk9IjExOCIgZm9udC1zaXplPSI3MCIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI5MDAiIGZpbGw9IiNmN2Y4ZmYiPkdsb3cgRmFzaGlvbiBCYXR0bGU8L3RleHQ+CiAgICAgIDx0ZXh0IHg9IjgyIiB5PSIxNjQiIGZvbnQtc2l6ZT0iMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIiBmaWxsPSIjYTliZGRiIj5GYXNoaW9uIOKAoiBOZW9uIOKAoiBTdG9yZTwvdGV4dD4KICAgICAgPHRleHQgeD0iNjAwIiB5PSI0MjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTgwIiBmb250LWZhbWlseT0iQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiI+8J+RlzwvdGV4dD4KICAgICAgPHJlY3QgeD0iODIiIHk9IjYwMCIgd2lkdGg9IjI2MCIgaGVpZ2h0PSIyNiIgcng9IjEzIiBmaWxsPSIjMDBmNWZmIi8+CiAgICAgIDxyZWN0IHg9IjM2MCIgeT0iNjAwIiB3aWR0aD0iMTUwIiBoZWlnaHQ9IjI2IiByeD0iMTMiIGZpbGw9IiNkY2U3ZmYiIG9wYWNpdHk9IjAuMjQiLz4KICAgICAgPHJlY3QgeD0iNTI4IiB5PSI2MDAiIHdpZHRoPSIyMTAiIGhlaWdodD0iMjYiIHJ4PSIxMyIgZmlsbD0iIzhhYTVkNiIgb3BhY2l0eT0iMC4xOCIvPgogICAgPC9zdmc+CiAgICA=" alt="Glow Fashion Battle cover">
+      <div class="card-body">
+        <span class="tag">Fashion • Neon • Store</span>
+        <h3>Glow Fashion Battle</h3>
+        <p>A stylish fashion title with coins, gems, power-ups, and a store system built around a stronger product feel.</p>
+        <div class="actions">
+          <a class="btn" href="https://glow-fashion-battle.netlify.app" target="_blank" rel="noopener noreferrer">Launch Game</a>
+          <a class="btn secondary" href="#contact">Studio Contact</a>
+        </div>
+      </div>
+    </article>
+    
+    <article class="game-card reveal">
+      <img class="card-cover" src="data:image/svg+xml;base64,CiAgICA8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEyMDAiIGhlaWdodD0iNzIwIiB2aWV3Qm94PSIwIDAgMTIwMCA3MjAiPgogICAgICA8ZGVmcz4KICAgICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+CiAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjNWM4Y2ZmIi8+CiAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM3YTVjZmYiLz4KICAgICAgICA8L2xpbmVhckdyYWRpZW50PgogICAgICA8L2RlZnM+CiAgICAgIDxyZWN0IHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjcyMCIgcng9IjM2IiBmaWxsPSIjMDkxMTFkIi8+CiAgICAgIDxyZWN0IHg9IjIyIiB5PSIyMiIgd2lkdGg9IjExNTYiIGhlaWdodD0iNjc2IiByeD0iMjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVjOGNmZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIwLjQ1Ii8+CiAgICAgIDxyZWN0IHg9IjQwIiB5PSI0MCIgd2lkdGg9IjExMjAiIGhlaWdodD0iNjQwIiByeD0iMjgiIGZpbGw9InVybCgjYmcpIiBvcGFjaXR5PSIwLjEyIi8+CiAgICAgIDxjaXJjbGUgY3g9IjE2MCIgY3k9IjE0MCIgcj0iMTIwIiBmaWxsPSIjNWM4Y2ZmIiBvcGFjaXR5PSIwLjEyIi8+CiAgICAgIDxjaXJjbGUgY3g9IjEwMTAiIGN5PSI1NDAiIHI9IjE0MCIgZmlsbD0iIzdhNWNmZiIgb3BhY2l0eT0iMC4xMiIvPgogICAgICA8cmVjdCB4PSI3MCIgeT0iMjIwIiB3aWR0aD0iMTA2MCIgaGVpZ2h0PSIzNDAiIHJ4PSIyOCIgZmlsbD0iIzBkMTcyOCIgc3Ryb2tlPSIjNWM4Y2ZmIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPHRleHQgeD0iODAiIHk9IjExOCIgZm9udC1zaXplPSI3MCIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI5MDAiIGZpbGw9IiNmN2Y4ZmYiPlRhcCBSdXNoIFJlZmxleDwvdGV4dD4KICAgICAgPHRleHQgeD0iODIiIHk9IjE2NCIgZm9udC1zaXplPSIzMCIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZpbGw9IiNhOWJkZGIiPkFyY2FkZSDigKIgUmVmbGV4IOKAoiBTcGVlZDwvdGV4dD4KICAgICAgPHRleHQgeD0iNjAwIiB5PSI0MjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTgwIiBmb250LWZhbWlseT0iQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiI+4pqhPC90ZXh0PgogICAgICA8cmVjdCB4PSI4MiIgeT0iNjAwIiB3aWR0aD0iMjYwIiBoZWlnaHQ9IjI2IiByeD0iMTMiIGZpbGw9IiM1YzhjZmYiLz4KICAgICAgPHJlY3QgeD0iMzYwIiB5PSI2MDAiIHdpZHRoPSIxNTAiIGhlaWdodD0iMjYiIHJ4PSIxMyIgZmlsbD0iI2RjZTdmZiIgb3BhY2l0eT0iMC4yNCIvPgogICAgICA8cmVjdCB4PSI1MjgiIHk9IjYwMCIgd2lkdGg9IjIxMCIgaGVpZ2h0PSIyNiIgcng9IjEzIiBmaWxsPSIjOGFhNWQ2IiBvcGFjaXR5PSIwLjE4Ii8+CiAgICA8L3N2Zz4KICAgIA==" alt="Tap Rush Reflex cover">
+      <div class="card-body">
+        <span class="tag">Arcade • Reflex • Speed</span>
+        <h3>Tap Rush Reflex</h3>
+        <p>A high-speed reflex game focused on quick reaction, replay pressure, and upgrade potential.</p>
+        <div class="actions">
+          <a class="btn" href="https://jc4768766-sudo.github.io/tap-rush-reflex/?v=3" target="_blank" rel="noopener noreferrer">Launch Game</a>
+          <a class="btn secondary" href="#contact">Studio Contact</a>
+        </div>
+      </div>
+    </article>
+    
+    <article class="game-card reveal">
+      <img class="card-cover" src="data:image/svg+xml;base64,CiAgICA8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEyMDAiIGhlaWdodD0iNzIwIiB2aWV3Qm94PSIwIDAgMTIwMCA3MjAiPgogICAgICA8ZGVmcz4KICAgICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+CiAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMDBmNWZmIi8+CiAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMyZmQzN2QiLz4KICAgICAgICA8L2xpbmVhckdyYWRpZW50PgogICAgICA8L2RlZnM+CiAgICAgIDxyZWN0IHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjcyMCIgcng9IjM2IiBmaWxsPSIjMDkxMTFkIi8+CiAgICAgIDxyZWN0IHg9IjIyIiB5PSIyMiIgd2lkdGg9IjExNTYiIGhlaWdodD0iNjc2IiByeD0iMjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwZjVmZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIwLjQ1Ii8+CiAgICAgIDxyZWN0IHg9IjQwIiB5PSI0MCIgd2lkdGg9IjExMjAiIGhlaWdodD0iNjQwIiByeD0iMjgiIGZpbGw9InVybCgjYmcpIiBvcGFjaXR5PSIwLjEyIi8+CiAgICAgIDxjaXJjbGUgY3g9IjE2MCIgY3k9IjE0MCIgcj0iMTIwIiBmaWxsPSIjMDBmNWZmIiBvcGFjaXR5PSIwLjEyIi8+CiAgICAgIDxjaXJjbGUgY3g9IjEwMTAiIGN5PSI1NDAiIHI9IjE0MCIgZmlsbD0iIzJmZDM3ZCIgb3BhY2l0eT0iMC4xMiIvPgogICAgICA8cmVjdCB4PSI3MCIgeT0iMjIwIiB3aWR0aD0iMTA2MCIgaGVpZ2h0PSIzNDAiIHJ4PSIyOCIgZmlsbD0iIzBkMTcyOCIgc3Ryb2tlPSIjMDBmNWZmIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPHRleHQgeD0iODAiIHk9IjExOCIgZm9udC1zaXplPSI3MCIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI5MDAiIGZpbGw9IiNmN2Y4ZmYiPkhhY2sgRGVmZW5kZXIgTmVvbjwvdGV4dD4KICAgICAgPHRleHQgeD0iODIiIHk9IjE2NCIgZm9udC1zaXplPSIzMCIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZpbGw9IiNhOWJkZGIiPkN5YmVyIOKAoiBDb21ibyDigKIgQWN0aW9uPC90ZXh0PgogICAgICA8dGV4dCB4PSI2MDAiIHk9IjQyMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxODAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIj7wn5uh77iPPC90ZXh0PgogICAgICA8cmVjdCB4PSI4MiIgeT0iNjAwIiB3aWR0aD0iMjYwIiBoZWlnaHQ9IjI2IiByeD0iMTMiIGZpbGw9IiMwMGY1ZmYiLz4KICAgICAgPHJlY3QgeD0iMzYwIiB5PSI2MDAiIHdpZHRoPSIxNTAiIGhlaWdodD0iMjYiIHJ4PSIxMyIgZmlsbD0iI2RjZTdmZiIgb3BhY2l0eT0iMC4yNCIvPgogICAgICA8cmVjdCB4PSI1MjgiIHk9IjYwMCIgd2lkdGg9IjIxMCIgaGVpZ2h0PSIyNiIgcng9IjEzIiBmaWxsPSIjOGFhNWQ2IiBvcGFjaXR5PSIwLjE4Ii8+CiAgICA8L3N2Zz4KICAgIA==" alt="Hack Defender Neon cover">
+      <div class="card-body">
+        <span class="tag">Cyber • Combo • Action</span>
+        <h3>Hack Defender Neon</h3>
+        <p>A cyber reflex challenge with futuristic visuals, combo pressure, and strong arcade energy.</p>
+        <div class="actions">
+          <a class="btn" href="https://jc4768766-sudo.github.io/hack-defender-neon/" target="_blank" rel="noopener noreferrer">Launch Game</a>
+          <a class="btn secondary" href="#contact">Studio Contact</a>
+        </div>
+      </div>
+    </article>
+    
+    <article class="game-card reveal">
+      <img class="card-cover" src="data:image/svg+xml;base64,CiAgICA8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEyMDAiIGhlaWdodD0iNzIwIiB2aWV3Qm94PSIwIDAgMTIwMCA3MjAiPgogICAgICA8ZGVmcz4KICAgICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+CiAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjNGRiOGZmIi8+CiAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMGY1ZmYiLz4KICAgICAgICA8L2xpbmVhckdyYWRpZW50PgogICAgICA8L2RlZnM+CiAgICAgIDxyZWN0IHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjcyMCIgcng9IjM2IiBmaWxsPSIjMDkxMTFkIi8+CiAgICAgIDxyZWN0IHg9IjIyIiB5PSIyMiIgd2lkdGg9IjExNTYiIGhlaWdodD0iNjc2IiByeD0iMjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzRkYjhmZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIwLjQ1Ii8+CiAgICAgIDxyZWN0IHg9IjQwIiB5PSI0MCIgd2lkdGg9IjExMjAiIGhlaWdodD0iNjQwIiByeD0iMjgiIGZpbGw9InVybCgjYmcpIiBvcGFjaXR5PSIwLjEyIi8+CiAgICAgIDxjaXJjbGUgY3g9IjE2MCIgY3k9IjE0MCIgcj0iMTIwIiBmaWxsPSIjNGRiOGZmIiBvcGFjaXR5PSIwLjEyIi8+CiAgICAgIDxjaXJjbGUgY3g9IjEwMTAiIGN5PSI1NDAiIHI9IjE0MCIgZmlsbD0iIzAwZjVmZiIgb3BhY2l0eT0iMC4xMiIvPgogICAgICA8cmVjdCB4PSI3MCIgeT0iMjIwIiB3aWR0aD0iMTA2MCIgaGVpZ2h0PSIzNDAiIHJ4PSIyOCIgZmlsbD0iIzBkMTcyOCIgc3Ryb2tlPSIjNGRiOGZmIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPHRleHQgeD0iODAiIHk9IjExOCIgZm9udC1zaXplPSI3MCIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI5MDAiIGZpbGw9IiNmN2Y4ZmYiPlNtYXJ0IE1pbmQgQ2hhbGxlbmdlPC90ZXh0PgogICAgICA8dGV4dCB4PSI4MiIgeT0iMTY0IiBmb250LXNpemU9IjMwIiBmb250LWZhbWlseT0iQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiIgZmlsbD0iI2E5YmRkYiI+UHV6emxlIOKAoiBCcmFpbiDigKIgQ2hhbGxlbmdlPC90ZXh0PgogICAgICA8dGV4dCB4PSI2MDAiIHk9IjQyMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxODAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIj7wn6epPC90ZXh0PgogICAgICA8cmVjdCB4PSI4MiIgeT0iNjAwIiB3aWR0aD0iMjYwIiBoZWlnaHQ9IjI2IiByeD0iMTMiIGZpbGw9IiM0ZGI4ZmYiLz4KICAgICAgPHJlY3QgeD0iMzYwIiB5PSI2MDAiIHdpZHRoPSIxNTAiIGhlaWdodD0iMjYiIHJ4PSIxMyIgZmlsbD0iI2RjZTdmZiIgb3BhY2l0eT0iMC4yNCIvPgogICAgICA8cmVjdCB4PSI1MjgiIHk9IjYwMCIgd2lkdGg9IjIxMCIgaGVpZ2h0PSIyNiIgcng9IjEzIiBmaWxsPSIjOGFhNWQ2IiBvcGFjaXR5PSIwLjE4Ii8+CiAgICA8L3N2Zz4KICAgIA==" alt="Smart Mind Challenge cover">
+      <div class="card-body">
+        <span class="tag">Puzzle • Brain • Challenge</span>
+        <h3>Smart Mind Challenge</h3>
+        <p>A lightweight puzzle experience designed for smart play loops, focus, and casual challenge.</p>
+        <div class="actions">
+          <a class="btn" href="https://lm4317275-pixel.github.io/smart-mind-challenge/" target="_blank" rel="noopener noreferrer">Launch Game</a>
+          <a class="btn secondary" href="#contact">Studio Contact</a>
+        </div>
+      </div>
+    </article>
+    
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="section-head reveal">
+      <div>
+        <h2>About The Studio</h2>
+        <p>John Store Games is now presented more like a futuristic indie arcade label instead of a simple links page.</p>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="panel reveal">
+        <h3>What changed visually</h3>
+        <p>The site now uses a cyber palette, sharper panels, embedded premium cover art, and smoother reveal motion so the page feels intentionally designed rather than lightly adjusted.</p>
+      </div>
+      <div class="panel reveal">
+        <h3>Why this matters</h3>
+        <ul>
+          <li>Better first impression</li>
+          <li>Stronger brand identity</li>
+          <li>More serious studio feel</li>
+          <li>Cleaner base for future monetization</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="roadmap">
+    <div class="section-head reveal">
+      <div>
+        <h2>Roadmap</h2>
+        <p>The homepage now looks much more intentional. The next major move is improving the games themselves.</p>
+      </div>
+    </div>
+    <div class="cta reveal">
+      <h3>Brand polished. Products next.</h3>
+      <p>You now have a Cyber Pro homepage that looks more like a real studio portfolio. The next upgrade should focus on making the games more addictive and commercially valuable.</p>
+      <a class="btn primary" href="#contact">Continue The Upgrade</a>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="section-head reveal">
+      <div>
+        <h2>Contact</h2>
+        <p>Current studio identity: John Store Games.</p>
+      </div>
+    </div>
+    <div class="panel reveal">
+      <h3>Studio Name</h3>
+      <p>John Store Games</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  © 2026 John Store Games — Cyber Pro arcade portfolio.
+</footer>
+
+<script>
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    document.getElementById("loading").classList.add("hide");
+  }, 1850);
+});
+
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add("show");
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll(".reveal").forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
