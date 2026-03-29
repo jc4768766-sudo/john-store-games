@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>John Store Games — Pro Max</title>
+<meta name="theme-color" content="#090014">
+<style>
+:root {
+  --bg-1:#05000d;
+  --bg-2:#120022;
+  --bg-3:#08111d;
+  --cyan:#00f5ff;
+  --pink:#ff2bd6;
+  --yellow:#ffd84d;
+  --lime:#92ff00;
+  --orange:#ff8a00;
+  --white:#f7f8ff;
+  --muted:#d5ceff;
+  --panel:rgba(255,255,255,.07);
+  --stroke:rgba(255,255,255,.10);
+  --shadow:0 28px 52px rgba(0,0,0,.30);
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  margin:0;
+  color:var(--white);
+  font-family:Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(0,245,255,.14), transparent 18%),
+    radial-gradient(circle at 80% 18%, rgba(255,43,214,.14), transparent 18%),
+    radial-gradient(circle at 50% 100%, rgba(146,255,0,.06), transparent 24%),
+    linear-gradient(180deg,var(--bg-1),var(--bg-2) 55%,var(--bg-3));
+  overflow-x:hidden;
+}
+body::before {
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+  background-size:34px 34px;
+  opacity:.22;
+}
+a { text-decoration:none; color:inherit; }
+
+.loading {
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:16px;
+  background:#040009;
+  transition:opacity .5s ease, visibility .5s ease;
+}
+.loading.hide { opacity:0; visibility:hidden; }
+.loading img { width:min(420px,86vw); filter:drop-shadow(0 0 18px rgba(0,245,255,.24)); }
+.loading p { margin:0; color:var(--muted); font-size:16px; }
+.loader-bar {
+  width:min(360px,82vw);
+  height:10px;
+  border-radius:999px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.09);
+  background:rgba(255,255,255,.06);
+}
+.loader-bar span {
+  display:block; height:100%; width:0;
+  background:linear-gradient(90deg,var(--cyan),var(--pink),var(--yellow));
+  box-shadow:0 0 22px rgba(255,43,214,.28);
+  animation:loadbar 2.2s ease forwards;
+}
+@keyframes loadbar { from { width:0; } to { width:100%; } }
+
+header {
+  position:sticky;
+  top:0;
+  z-index:100;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  background:rgba(8,0,20,.58);
+  backdrop-filter:blur(16px);
+}
+.header-inner {
+  max-width:1280px;
+  margin:0 auto;
+  padding:14px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+}
+.brand {
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.brand-mark {
+  width:52px; height:52px; border-radius:16px;
+  display:grid; place-items:center; font-size:24px;
+  background:linear-gradient(135deg,rgba(0,245,255,.22),rgba(255,43,214,.22));
+  border:1px solid rgba(255,255,255,.10);
+  box-shadow:0 0 24px rgba(0,245,255,.10);
+}
+.brand-text {
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:.8px;
+  color:var(--cyan);
+  text-shadow:0 0 12px rgba(0,245,255,.28);
+}
+nav {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+nav a, .btn {
+  border:none;
+  border-radius:14px;
+  padding:12px 16px;
+  color:#fff;
+  font-weight:800;
+  cursor:pointer;
+  transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease, background .16s ease;
+  background:linear-gradient(90deg,var(--pink),#8f59ff);
+  box-shadow:0 0 18px rgba(255,43,214,.16);
+}
+nav a:hover, .btn:hover {
+  transform:translateY(-2px) scale(1.02);
+}
+.btn.alt {
+  background:linear-gradient(90deg,var(--cyan),#248bff);
+  box-shadow:0 0 18px rgba(0,245,255,.16);
+}
+.btn.ghost {
+  background:rgba(255,255,255,.08);
+  box-shadow:none;
+}
+.btn.warn {
+  background:linear-gradient(90deg,var(--yellow),var(--orange));
+  color:#261400;
+}
+
+.hero {
+  max-width:1280px;
+  margin:0 auto;
+  padding:44px 20px 28px;
+  display:grid;
+  grid-template-columns:1.08fr .92fr;
+  gap:22px;
+  align-items:center;
+}
+.hero-copy h1 {
+  margin:0 0 14px;
+  font-size:clamp(42px,7vw,86px);
+  line-height:1.02;
+}
+.glow {
+  color:var(--cyan);
+  text-shadow:0 0 14px rgba(0,245,255,.35), 0 0 24px rgba(255,43,214,.12);
+}
+.hero-copy p {
+  margin:0 0 22px;
+  max-width:760px;
+  color:var(--muted);
+  font-size:18px;
+  line-height:1.82;
+}
+.hero-actions {
+  display:flex; gap:10px; flex-wrap:wrap;
+}
+.hero-card, .panel, .game-card, .cta-box {
+  background:var(--panel);
+  border:1px solid var(--stroke);
+  border-radius:28px;
+  backdrop-filter:blur(12px);
+  box-shadow:var(--shadow);
+}
+.hero-card { padding:18px; }
+.hero-visual {
+  position:relative;
+  min-height:340px;
+  border-radius:22px;
+  padding:22px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  background:
+    radial-gradient(circle at 28% 18%, rgba(0,245,255,.18), transparent 22%),
+    radial-gradient(circle at 80% 28%, rgba(255,43,214,.15), transparent 24%),
+    linear-gradient(145deg, rgba(0,245,255,.08), rgba(255,43,214,.10));
+  border:1px solid rgba(255,255,255,.08);
+}
+.hero-visual::after {
+  content:"";
+  position:absolute;
+  inset:-40% -20%;
+  background:linear-gradient(120deg, transparent 35%, rgba(255,255,255,.08) 50%, transparent 65%);
+  transform:rotate(10deg);
+  animation:shine 8s linear infinite;
+}
+@keyframes shine {
+  from { transform:translateX(-60%) rotate(10deg); }
+  to { transform:translateX(60%) rotate(10deg); }
+}
+.visual-chip {
+  width:max-content;
+  padding:8px 12px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:800;
+  color:var(--yellow);
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.10);
+  position:relative;
+  z-index:1;
+}
+.visual-title {
+  font-size:52px;
+  font-weight:900;
+  line-height:1.02;
+  text-align:left;
+  position:relative;
+  z-index:1;
+}
+.visual-sub {
+  color:var(--muted);
+  font-size:16px;
+  line-height:1.7;
+  max-width:420px;
+  position:relative;
+  z-index:1;
+}
+.stats {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-top:14px;
+}
+.stat {
+  padding:14px;
+  text-align:center;
+  border-radius:18px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+}
+.stat .num {
+  font-size:28px;
+  font-weight:900;
+  color:var(--yellow);
+}
+.stat .label {
+  margin-top:4px;
+  font-size:12px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.7px;
+}
+
+main section {
+  max-width:1280px;
+  margin:0 auto;
+  padding:30px 20px;
+}
+.section-head {
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:14px;
+  margin-bottom:18px;
+}
+.section-head h2 {
+  margin:0;
+  font-size:38px;
+  color:var(--cyan);
+  text-shadow:0 0 12px rgba(0,245,255,.16);
+}
+.section-head p {
+  margin:0;
+  max-width:760px;
+  color:var(--muted);
+  line-height:1.82;
+}
+
+.games-grid {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:18px;
+}
+.game-card {
+  overflow:hidden;
+  transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.game-card:hover {
+  transform:translateY(-6px);
+  border-color:rgba(0,245,255,.28);
+  box-shadow:0 28px 48px rgba(0,0,0,.30), 0 0 24px rgba(0,245,255,.08);
+}
+.card-cover {
+  width:100%;
+  display:block;
+  aspect-ratio:16 / 9;
+  object-fit:cover;
+  background:#10192e;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.card-body {
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.tag {
+  display:inline-block;
+  width:max-content;
+  padding:6px 10px;
+  border-radius:999px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.10);
+  color:var(--yellow);
+  font-size:12px;
+  font-weight:800;
+}
+.game-card h3 {
+  margin:0;
+  font-size:30px;
+}
+.game-card p {
+  margin:0;
+  color:var(--muted);
+  line-height:1.82;
+  flex:1;
+}
+.card-actions {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.info-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+.panel {
+  padding:22px;
+}
+.panel h3 {
+  margin:0 0 12px;
+  font-size:26px;
+  color:var(--yellow);
+}
+.panel p, .panel li {
+  margin:0;
+  color:var(--muted);
+  line-height:1.9;
+}
+.panel ul {
+  margin:0;
+  padding-left:20px;
+}
+
+.cta-box {
+  padding:28px;
+  text-align:center;
+}
+.cta-box h3 {
+  margin:0 0 10px;
+  font-size:36px;
+  color:var(--white);
+}
+.cta-box p {
+  margin:0 0 16px;
+  color:var(--muted);
+  line-height:1.85;
+}
+
+footer {
+  max-width:1280px;
+  margin:0 auto;
+  padding:26px 20px 52px;
+  text-align:center;
+  color:var(--muted);
+  line-height:1.8;
+}
+
+.reveal {
+  opacity:0;
+  transform:translateY(26px);
+  transition:opacity .7s ease, transform .7s ease;
+}
+.reveal.show {
+  opacity:1;
+  transform:translateY(0);
+}
+
+@media (max-width:1050px) {
+  .hero, .games-grid, .info-grid {
+    grid-template-columns:1fr;
+  }
+}
+@media (max-width:760px) {
+  .header-inner {
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  .stats {
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+</style>
+</head>
+<body>
+<div class="loading" id="loadingScreen">
+  <img src="data:image/svg+xml;base64,CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iOTAwIiBoZWlnaHQ9IjI2MCIgdmlld0JveD0iMCAwIDkwMCAyNjAiPgogIDxkZWZzPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCIgeDI9IjEiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMDBmNWZmIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjZmYyYmQ2Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2ZmZDg0ZCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxmaWx0ZXIgaWQ9Imdsb3ciPgogICAgICA8ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSI4IiByZXN1bHQ9ImJsdXIiLz4KICAgICAgPGZlTWVyZ2U+PGZlTWVyZ2VOb2RlIGluPSJibHVyIi8+PGZlTWVyZ2VOb2RlIGluPSJTb3VyY2VHcmFwaGljIi8+PC9mZU1lcmdlPgogICAgPC9maWx0ZXI+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI5MDAiIGhlaWdodD0iMjYwIiByeD0iMzQiIGZpbGw9IiMwODAwMTIiLz4KICA8Y2lyY2xlIGN4PSIxNjAiIGN5PSI4MCIgcj0iODAiIGZpbGw9IiMwMGY1ZmYiIG9wYWNpdHk9IjAuMTAiLz4KICA8Y2lyY2xlIGN4PSI3NjAiIGN5PSIxOTAiIHI9IjkwIiBmaWxsPSIjZmYyYmQ2IiBvcGFjaXR5PSIwLjEwIi8+CiAgPGcgZmlsdGVyPSJ1cmwoI2dsb3cpIj4KICAgIDx0ZXh0IHg9IjU2IiB5PSIxMDYiIGZvbnQtc2l6ZT0iNjQiIGZvbnQtZmFtaWx5PSJBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSJ1cmwoI2cpIj5KT0hOIFNUT1JFPC90ZXh0PgogICAgPHRleHQgeD0iNTYiIHk9IjE3OCIgZm9udC1zaXplPSI3MCIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI5MDAiIGZpbGw9IiNmZmZmZmYiPkdBTUVTPC90ZXh0PgogIDwvZz4KICA8dGV4dCB4PSI2MCIgeT0iMjIwIiBmb250LXNpemU9IjI0IiBmb250LWZhbWlseT0iQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiIgZmlsbD0iI2Q1Y2VmZiI+TmVvbiBhcmNhZGUgcG9ydGZvbGlvIOKAoiBQbGF5IGluc3RhbnRseSDigKIgQnVpbHQgdG8gZ3JvdzwvdGV4dD4KPC9zdmc+Cg==" alt="John Store Games logo" style="width:min(420px,86vw)">
+  <p>Loading premium arcade experience…</p>
+  <div class="loader-bar"><span></span></div>
+</div>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-mark">🎮</div>
+      <div class="brand-text">JOHN STORE GAMES</div>
+    </div>
+    <nav>
+      <a href="#games">Games</a>
+      <a href="#about">About</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-copy reveal">
+      <h1>Build a real <span class="glow">game brand</span>, not just separate links.</h1>
+      <p>John Store Games is a neon arcade portfolio designed to feel like a real studio. The goal is simple: present your games professionally, make them easy to play, and prepare the whole project for stronger polish, publishing, and future monetization.</p>
+      <div class="hero-actions">
+        <a class="btn" href="#games">Explore Games</a>
+        <a class="btn alt" href="#contact">Work With Us</a>
+        <a class="btn ghost" href="#roadmap">See Roadmap</a>
+      </div>
+    </div>
+
+    <div class="hero-card reveal">
+      <div class="hero-visual">
+        <div class="visual-chip">PRO MAX PORTFOLIO</div>
+        <div class="visual-title">JOHN<br>STORE<br>GAMES</div>
+        <div class="visual-sub">One cleaner identity, one stronger homepage, and a better foundation for polishing your games and building a real indie brand.</div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="num">4</div><div class="label">Games</div></div>
+        <div class="stat"><div class="num">Live</div><div class="label">Status</div></div>
+        <div class="stat"><div class="num">Web</div><div class="label">Platform</div></div>
+        <div class="stat"><div class="num">Next</div><div class="label">Growth</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="games">
+    <div class="section-head reveal">
+      <div>
+        <h2>Featured Games</h2>
+        <p>This is the stronger presentation layer: better hero, more premium cards, richer spacing, animated sections, and a clearer studio identity.</p>
+      </div>
+    </div>
+
+    <div class="games-grid">
+      
+<article class="game-card reveal">
+  <img class="card-cover" src="data:image/svg+xml;base64,CiAgICA8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEyMDAiIGhlaWdodD0iNzAwIiB2aWV3Qm94PSIwIDAgMTIwMCA3MDAiPgogICAgICA8ZGVmcz4KICAgICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+CiAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMDBmNWZmIi8+CiAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZjJiZDYiLz4KICAgICAgICA8L2xpbmVhckdyYWRpZW50PgogICAgICAgIDxmaWx0ZXIgaWQ9Imdsb3ciPgogICAgICAgICAgPGZlR2F1c3NpYW5CbHVyIHN0ZERldmlhdGlvbj0iMTAiIHJlc3VsdD0iYmx1ciIvPgogICAgICAgICAgPGZlTWVyZ2U+PGZlTWVyZ2VOb2RlIGluPSJibHVyIi8+PGZlTWVyZ2VOb2RlIGluPSJTb3VyY2VHcmFwaGljIi8+PC9mZU1lcmdlPgogICAgICAgIDwvZmlsdGVyPgogICAgICA8L2RlZnM+CiAgICAgIDxyZWN0IHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjcwMCIgcng9IjQwIiBmaWxsPSIjMDkwZjFmIi8+CiAgICAgIDxyZWN0IHg9IjIyIiB5PSIyMiIgd2lkdGg9IjExNTYiIGhlaWdodD0iNjU2IiByeD0iMzAiIGZpbGw9InVybCgjYmcpIiBvcGFjaXR5PSIwLjE4Ii8+CiAgICAgIDxjaXJjbGUgY3g9IjE4MCIgY3k9IjEzMCIgcj0iMTIwIiBmaWxsPSIjMDBmNWZmIiBvcGFjaXR5PSIwLjE0Ii8+CiAgICAgIDxjaXJjbGUgY3g9IjEwMjAiIGN5PSI1NDAiIHI9IjE1MCIgZmlsbD0iI2ZmMmJkNiIgb3BhY2l0eT0iMC4xNiIvPgogICAgICA8cmVjdCB4PSI1NiIgeT0iMTk2IiB3aWR0aD0iMTA4OCIgaGVpZ2h0PSIzNDAiIHJ4PSIzMiIgZmlsbD0iIzExMTkyZCIgc3Ryb2tlPSIjZmZkODRkIiBzdHJva2Utd2lkdGg9IjUiLz4KICAgICAgPGcgZmlsdGVyPSJ1cmwoI2dsb3cpIj4KICAgICAgICA8dGV4dCB4PSI2OCIgeT0iMTEyIiBmb250LXNpemU9IjY4IiBmb250LWZhbWlseT0iQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iI2ZmZmZmZiI+R2xvdyBGYXNoaW9uIEJhdHRsZTwvdGV4dD4KICAgICAgPC9nPgogICAgICA8dGV4dCB4PSI3MCIgeT0iMTU4IiBmb250LXNpemU9IjMwIiBmb250LWZhbWlseT0iQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiIgZmlsbD0iI2Q1Y2VmZiI+RmFzaGlvbiDigKIgTmVvbiDigKIgU3RvcmU8L3RleHQ+CiAgICAgIDx0ZXh0IHg9IjYwMCIgeT0iMzk2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjE3MCIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiPvCfkZc8L3RleHQ+CiAgICAgIDxyZWN0IHg9IjcwIiB5PSI1NzgiIHdpZHRoPSIyNTAiIGhlaWdodD0iMjgiIHJ4PSIxNCIgZmlsbD0iI2ZmZDg0ZCIvPgogICAgICA8cmVjdCB4PSIzMzQiIHk9IjU3OCIgd2lkdGg9IjE0MCIgaGVpZ2h0PSIyOCIgcng9IjE0IiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjIyIi8+CiAgICAgIDxyZWN0IHg9IjQ4OCIgeT0iNTc4IiB3aWR0aD0iMjEwIiBoZWlnaHQ9IjI4IiByeD0iMTQiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMTQiLz4KICAgIDwvc3ZnPgogICAg" alt="Glow Fashion Battle cover">
+  <div class="card-body">
+    <span class="tag">Fashion • Neon • Store</span>
+    <h3>Glow Fashion Battle</h3>
+    <p>A stylish neon fashion game with coins, gems, power-ups, a store system, and a stronger product-like feel.</p>
+    <div class="card-actions">
+      <a class="btn" href="https://glow-fashion-battle.netlify.app" target="_blank" rel="noopener noreferrer">Play Now</a>
+      <a class="btn ghost" href="#contact">Studio Info</a>
+    </div>
+  </div>
+</article>
+
+
+<article class="game-card reveal">
+  <img class="card-cover" src="data:image/svg+xml;base64,CiAgICA8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEyMDAiIGhlaWdodD0iNzAwIiB2aWV3Qm94PSIwIDAgMTIwMCA3MDAiPgogICAgICA8ZGVmcz4KICAgICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+CiAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmYyYmQ2Ii8+CiAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM3YzVjZmYiLz4KICAgICAgICA8L2xpbmVhckdyYWRpZW50PgogICAgICAgIDxmaWx0ZXIgaWQ9Imdsb3ciPgogICAgICAgICAgPGZlR2F1c3NpYW5CbHVyIHN0ZERldmlhdGlvbj0iMTAiIHJlc3VsdD0iYmx1ciIvPgogICAgICAgICAgPGZlTWVyZ2U+PGZlTWVyZ2VOb2RlIGluPSJibHVyIi8+PGZlTWVyZ2VOb2RlIGluPSJTb3VyY2VHcmFwaGljIi8+PC9mZU1lcmdlPgogICAgICAgIDwvZmlsdGVyPgogICAgICA8L2RlZnM+CiAgICAgIDxyZWN0IHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjcwMCIgcng9IjQwIiBmaWxsPSIjMDkwZjFmIi8+CiAgICAgIDxyZWN0IHg9IjIyIiB5PSIyMiIgd2lkdGg9IjExNTYiIGhlaWdodD0iNjU2IiByeD0iMzAiIGZpbGw9InVybCgjYmcpIiBvcGFjaXR5PSIwLjE4Ii8+CiAgICAgIDxjaXJjbGUgY3g9IjE4MCIgY3k9IjEzMCIgcj0iMTIwIiBmaWxsPSIjZmYyYmQ2IiBvcGFjaXR5PSIwLjE0Ii8+CiAgICAgIDxjaXJjbGUgY3g9IjEwMjAiIGN5PSI1NDAiIHI9IjE1MCIgZmlsbD0iIzdjNWNmZiIgb3BhY2l0eT0iMC4xNiIvPgogICAgICA8cmVjdCB4PSI1NiIgeT0iMTk2IiB3aWR0aD0iMTA4OCIgaGVpZ2h0PSIzNDAiIHJ4PSIzMiIgZmlsbD0iIzExMTkyZCIgc3Ryb2tlPSIjMDBmNWZmIiBzdHJva2Utd2lkdGg9IjUiLz4KICAgICAgPGcgZmlsdGVyPSJ1cmwoI2dsb3cpIj4KICAgICAgICA8dGV4dCB4PSI2OCIgeT0iMTEyIiBmb250LXNpemU9IjY4IiBmb250LWZhbWlseT0iQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iI2ZmZmZmZiI+VGFwIFJ1c2ggUmVmbGV4PC90ZXh0PgogICAgICA8L2c+CiAgICAgIDx0ZXh0IHg9IjcwIiB5PSIxNTgiIGZvbnQtc2l6ZT0iMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIiBmaWxsPSIjZDVjZWZmIj5BcmNhZGUg4oCiIFJlZmxleCDigKIgRmFzdDwvdGV4dD4KICAgICAgPHRleHQgeD0iNjAwIiB5PSIzOTYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTcwIiBmb250LWZhbWlseT0iQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiI+4pqhPC90ZXh0PgogICAgICA8cmVjdCB4PSI3MCIgeT0iNTc4IiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjI4IiByeD0iMTQiIGZpbGw9IiMwMGY1ZmYiLz4KICAgICAgPHJlY3QgeD0iMzM0IiB5PSI1NzgiIHdpZHRoPSIxNDAiIGhlaWdodD0iMjgiIHJ4PSIxNCIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4yMiIvPgogICAgICA8cmVjdCB4PSI0ODgiIHk9IjU3OCIgd2lkdGg9IjIxMCIgaGVpZ2h0PSIyOCIgcng9IjE0IiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjE0Ii8+CiAgICA8L3N2Zz4KICAgIA==" alt="Tap Rush Reflex cover">
+  <div class="card-body">
+    <span class="tag">Arcade • Reflex • Fast</span>
+    <h3>Tap Rush Reflex</h3>
+    <p>A quick reaction game built for speed, pressure, and replay value. Clean core gameplay with room for viral-style upgrades.</p>
+    <div class="card-actions">
+      <a class="btn" href="https://jc4768766-sudo.github.io/tap-rush-reflex/?v=3" target="_blank" rel="noopener noreferrer">Play Now</a>
+      <a class="btn ghost" href="#contact">Studio Info</a>
+    </div>
+  </div>
+</article>
+
+
+<article class="game-card reveal">
+  <img class="card-cover" src="data:image/svg+xml;base64,CiAgICA8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEyMDAiIGhlaWdodD0iNzAwIiB2aWV3Qm94PSIwIDAgMTIwMCA3MDAiPgogICAgICA8ZGVmcz4KICAgICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+CiAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMDBmNWZmIi8+CiAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMGM4NTMiLz4KICAgICAgICA8L2xpbmVhckdyYWRpZW50PgogICAgICAgIDxmaWx0ZXIgaWQ9Imdsb3ciPgogICAgICAgICAgPGZlR2F1c3NpYW5CbHVyIHN0ZERldmlhdGlvbj0iMTAiIHJlc3VsdD0iYmx1ciIvPgogICAgICAgICAgPGZlTWVyZ2U+PGZlTWVyZ2VOb2RlIGluPSJibHVyIi8+PGZlTWVyZ2VOb2RlIGluPSJTb3VyY2VHcmFwaGljIi8+PC9mZU1lcmdlPgogICAgICAgIDwvZmlsdGVyPgogICAgICA8L2RlZnM+CiAgICAgIDxyZWN0IHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjcwMCIgcng9IjQwIiBmaWxsPSIjMDkwZjFmIi8+CiAgICAgIDxyZWN0IHg9IjIyIiB5PSIyMiIgd2lkdGg9IjExNTYiIGhlaWdodD0iNjU2IiByeD0iMzAiIGZpbGw9InVybCgjYmcpIiBvcGFjaXR5PSIwLjE4Ii8+CiAgICAgIDxjaXJjbGUgY3g9IjE4MCIgY3k9IjEzMCIgcj0iMTIwIiBmaWxsPSIjMDBmNWZmIiBvcGFjaXR5PSIwLjE0Ii8+CiAgICAgIDxjaXJjbGUgY3g9IjEwMjAiIGN5PSI1NDAiIHI9IjE1MCIgZmlsbD0iIzAwYzg1MyIgb3BhY2l0eT0iMC4xNiIvPgogICAgICA8cmVjdCB4PSI1NiIgeT0iMTk2IiB3aWR0aD0iMTA4OCIgaGVpZ2h0PSIzNDAiIHJ4PSIzMiIgZmlsbD0iIzExMTkyZCIgc3Ryb2tlPSIjZmYyYmQ2IiBzdHJva2Utd2lkdGg9IjUiLz4KICAgICAgPGcgZmlsdGVyPSJ1cmwoI2dsb3cpIj4KICAgICAgICA8dGV4dCB4PSI2OCIgeT0iMTEyIiBmb250LXNpemU9IjY4IiBmb250LWZhbWlseT0iQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iI2ZmZmZmZiI+SGFjayBEZWZlbmRlciBOZW9uPC90ZXh0PgogICAgICA8L2c+CiAgICAgIDx0ZXh0IHg9IjcwIiB5PSIxNTgiIGZvbnQtc2l6ZT0iMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIiBmaWxsPSIjZDVjZWZmIj5DeWJlciDigKIgQ29tYm8g4oCiIEFjdGlvbjwvdGV4dD4KICAgICAgPHRleHQgeD0iNjAwIiB5PSIzOTYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTcwIiBmb250LWZhbWlseT0iQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiI+8J+boe+4jzwvdGV4dD4KICAgICAgPHJlY3QgeD0iNzAiIHk9IjU3OCIgd2lkdGg9IjI1MCIgaGVpZ2h0PSIyOCIgcng9IjE0IiBmaWxsPSIjZmYyYmQ2Ii8+CiAgICAgIDxyZWN0IHg9IjMzNCIgeT0iNTc4IiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjI4IiByeD0iMTQiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMjIiLz4KICAgICAgPHJlY3QgeD0iNDg4IiB5PSI1NzgiIHdpZHRoPSIyMTAiIGhlaWdodD0iMjgiIHJ4PSIxNCIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xNCIvPgogICAgPC9zdmc+CiAgICA=" alt="Hack Defender Neon cover">
+  <div class="card-body">
+    <span class="tag">Cyber • Combo • Action</span>
+    <h3>Hack Defender Neon</h3>
+    <p>A cyber-themed reflex challenge with bright neon energy, combo pressure, and a futuristic arcade identity.</p>
+    <div class="card-actions">
+      <a class="btn" href="https://jc4768766-sudo.github.io/hack-defender-neon/" target="_blank" rel="noopener noreferrer">Play Now</a>
+      <a class="btn ghost" href="#contact">Studio Info</a>
+    </div>
+  </div>
+</article>
+
+
+<article class="game-card reveal">
+  <img class="card-cover" src="data:image/svg+xml;base64,CiAgICA8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEyMDAiIGhlaWdodD0iNzAwIiB2aWV3Qm94PSIwIDAgMTIwMCA3MDAiPgogICAgICA8ZGVmcz4KICAgICAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+CiAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZkODRkIi8+CiAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZjhhMDAiLz4KICAgICAgICA8L2xpbmVhckdyYWRpZW50PgogICAgICAgIDxmaWx0ZXIgaWQ9Imdsb3ciPgogICAgICAgICAgPGZlR2F1c3NpYW5CbHVyIHN0ZERldmlhdGlvbj0iMTAiIHJlc3VsdD0iYmx1ciIvPgogICAgICAgICAgPGZlTWVyZ2U+PGZlTWVyZ2VOb2RlIGluPSJibHVyIi8+PGZlTWVyZ2VOb2RlIGluPSJTb3VyY2VHcmFwaGljIi8+PC9mZU1lcmdlPgogICAgICAgIDwvZmlsdGVyPgogICAgICA8L2RlZnM+CiAgICAgIDxyZWN0IHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjcwMCIgcng9IjQwIiBmaWxsPSIjMDkwZjFmIi8+CiAgICAgIDxyZWN0IHg9IjIyIiB5PSIyMiIgd2lkdGg9IjExNTYiIGhlaWdodD0iNjU2IiByeD0iMzAiIGZpbGw9InVybCgjYmcpIiBvcGFjaXR5PSIwLjE4Ii8+CiAgICAgIDxjaXJjbGUgY3g9IjE4MCIgY3k9IjEzMCIgcj0iMTIwIiBmaWxsPSIjZmZkODRkIiBvcGFjaXR5PSIwLjE0Ii8+CiAgICAgIDxjaXJjbGUgY3g9IjEwMjAiIGN5PSI1NDAiIHI9IjE1MCIgZmlsbD0iI2ZmOGEwMCIgb3BhY2l0eT0iMC4xNiIvPgogICAgICA8cmVjdCB4PSI1NiIgeT0iMTk2IiB3aWR0aD0iMTA4OCIgaGVpZ2h0PSIzNDAiIHJ4PSIzMiIgZmlsbD0iIzExMTkyZCIgc3Ryb2tlPSIjMDBmNWZmIiBzdHJva2Utd2lkdGg9IjUiLz4KICAgICAgPGcgZmlsdGVyPSJ1cmwoI2dsb3cpIj4KICAgICAgICA8dGV4dCB4PSI2OCIgeT0iMTEyIiBmb250LXNpemU9IjY4IiBmb250LWZhbWlseT0iQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iI2ZmZmZmZiI+U21hcnQgTWluZCBDaGFsbGVuZ2U8L3RleHQ+CiAgICAgIDwvZz4KICAgICAgPHRleHQgeD0iNzAiIHk9IjE1OCIgZm9udC1zaXplPSIzMCIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZpbGw9IiNkNWNlZmYiPlB1enpsZSDigKIgQnJhaW4g4oCiIENoYWxsZW5nZTwvdGV4dD4KICAgICAgPHRleHQgeD0iNjAwIiB5PSIzOTYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTcwIiBmb250LWZhbWlseT0iQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiI+8J+nqTwvdGV4dD4KICAgICAgPHJlY3QgeD0iNzAiIHk9IjU3OCIgd2lkdGg9IjI1MCIgaGVpZ2h0PSIyOCIgcng9IjE0IiBmaWxsPSIjMDBmNWZmIi8+CiAgICAgIDxyZWN0IHg9IjMzNCIgeT0iNTc4IiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjI4IiByeD0iMTQiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMjIiLz4KICAgICAgPHJlY3QgeD0iNDg4IiB5PSI1NzgiIHdpZHRoPSIyMTAiIGhlaWdodD0iMjgiIHJ4PSIxNCIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xNCIvPgogICAgPC9zdmc+CiAgICA=" alt="Smart Mind Challenge cover">
+  <div class="card-body">
+    <span class="tag">Puzzle • Brain • Challenge</span>
+    <h3>Smart Mind Challenge</h3>
+    <p>A lightweight puzzle experience made for quick thinking, casual challenge loops, and sharper mental play sessions.</p>
+    <div class="card-actions">
+      <a class="btn" href="https://lm4317275-pixel.github.io/smart-mind-challenge/" target="_blank" rel="noopener noreferrer">Play Now</a>
+      <a class="btn ghost" href="#contact">Studio Info</a>
+    </div>
+  </div>
+</article>
+
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="section-head reveal">
+      <div>
+        <h2>About The Studio</h2>
+        <p>John Store Games is positioned as a growing indie arcade label. The aim is to make the whole project feel coherent, memorable, and ready for future upgrades.</p>
+      </div>
+    </div>
+
+    <div class="info-grid">
+      <div class="panel reveal">
+        <h3>What changed in Pro Max</h3>
+        <p>This version adds a richer hero, better visual hierarchy, smoother motion, premium cover art, and a presentation that feels much closer to a real indie studio website.</p>
+      </div>
+
+      <div class="panel reveal">
+        <h3>What comes next</h3>
+        <ul>
+          <li>Polish individual games</li>
+          <li>Add better sounds and visual effects</li>
+          <li>Improve replay loops and retention</li>
+          <li>Prepare the portfolio for monetization</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="roadmap">
+    <div class="section-head reveal">
+      <div>
+        <h2>Roadmap</h2>
+        <p>The brand is now presentable. The next move is to make the games themselves stronger and more addictive.</p>
+      </div>
+    </div>
+
+    <div class="cta-box reveal">
+      <h3>Studio first. Product next.</h3>
+      <p>You now have a cleaner foundation: one homepage, one identity, and a clearer path to polish, growth, and potential income.</p>
+      <a class="btn warn" href="#contact">Continue The Upgrade</a>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="section-head reveal">
+      <div>
+        <h2>Contact</h2>
+        <p>Built as a growing indie portfolio under the name John Store Games.</p>
+      </div>
+    </div>
+
+    <div class="panel reveal">
+      <h3>Current Brand</h3>
+      <p>John Store Games</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  © 2026 John Store Games — Pro Max neon arcade portfolio.
+</footer>
+
+<script>
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    document.getElementById("loadingScreen").classList.add("hide");
+  }, 1850);
+});
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("show");
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
